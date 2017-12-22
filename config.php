@@ -6,6 +6,6 @@
 
   $c = new mysqli($servername, $username, $password, $dbname);
   if($c->connect_error){
-    echo $c->connect_error;
+    die("Error: ".$c->connect_error);
   }
 ?>
