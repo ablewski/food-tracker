@@ -23,7 +23,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-
+    <meta charset="utf-8" />
   </head>
   <body>
     <div class='container'>
@@ -49,17 +49,6 @@
       </div>
       <div class='button-field'>
         <input type='button' value='Continue' onclick="check();">
-        <script>
-        function check(){
-          var str_to_check = document.getElementsByClassName('header').innerHTML;
-          var success = "successfull";
-          if(string.includes(success)){
-            window.location.href = 'index.php';
-          }else{
-            window.location.href = 'register.php';
-          }
-        }
-        </script>
       </div>
     </div>
   </body>
