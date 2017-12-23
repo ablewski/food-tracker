@@ -5,6 +5,12 @@ session_start();
 
 $error_flag = true;
 
+if(isset($_SESSION['key']){
+  header('location: key.php');
+}elseif((!isset($_SESSION['key'])) && (isset($_SESSION['email']))){
+  header('location: index.php');
+}
+
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
   $email;
   if((isset($_POST['email'])) || (!empty($_POST['email']))){
@@ -12,12 +18,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $s_email = filter_var($email, FILTER_SANITIZE_EMAIL);
     if($s_email==$email){
       if(filter_var($s_email, FILTER_VALIDATE_EMAIL) === TRUE){
-        $email = $s_email;
         $q = "SELECT id FROM users WHERE email = '$email'";
         $r = $c->query($q);
         if($r->num_rows>0){
           $error_flag = false;
           $_SESSION['err_email'] = "Email already used";
+        }else{
+          $_SESSION['email'] = $email;
+          $_SESSION['key'];
         }
       }else{
         $error_flag = false;
