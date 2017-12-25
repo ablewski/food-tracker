@@ -3,6 +3,7 @@
   require_once('config.php');
   session_start();
 
+
   if(isset($_SESSION['key'])){
     $bytes = random_bytes(8);
     $key = bin2hex($bytes);
@@ -12,6 +13,7 @@
     if($c->query($q) === TRUE){
       $_SESSION['success'] = "Registration successfull";
       $_SESSION['show_key'] = $key;
+      unset($_SESSION['key']);
     }else{
       $_SESSION['failed'] = "Unable to register, try again later";
       unset($_SESSION['email']);
