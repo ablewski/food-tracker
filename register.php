@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $q = "SELECT id FROM users WHERE email = '$email'";
         $r = $c->query($q);
         if($r->num_rows == 0){
-          $_SESSION['email'] = $email;
+          $_SESSION['em'] = $email;
         }else{
           $error_flag = false;
           $_SESSION['err_email'] = "Email already used";

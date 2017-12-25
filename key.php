@@ -3,24 +3,28 @@
   require_once('config.php');
   session_start();
 
+  if(isset($_SESSION['email'])){
+    header('location: index.php');
+  }
 
   if(isset($_SESSION['key'])){
     $bytes = random_bytes(8);
     $key = bin2hex($bytes);
     $key_hash = password_hash($key, PASSWORD_DEFAULT);
-    $email = $_SESSION['email'];
+    $email = $_SESSION['em'];
     $q = "INSERT INTO users (email, hashed_key) VALUES ('$email' ,'$key_hash')";
     if($c->query($q) === TRUE){
       $_SESSION['success'] = "Registration successfull";
+      $_SESSION['email'] = $email;
       $_SESSION['show_key'] = $key;
       unset($_SESSION['key']);
     }else{
       $_SESSION['failed'] = "Unable to register, try again later";
-      unset($_SESSION['email']);
+      unset($_SESSION['em']);
       unset($_SESSION['key']);
     }
   }else{
-    unset($_SESSION['email']);
+    unset($_SESSION['em']);
     unset($_SESSION['key']);
     header('location: register.php');
 
