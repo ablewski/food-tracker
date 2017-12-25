@@ -5,27 +5,25 @@ session_start();
 
 $error_flag = true;
 
-if(isset($_SESSION['key']){
+if(isset($_SESSION['key'])){
   header('location: key.php');
 }elseif((!isset($_SESSION['key'])) && (isset($_SESSION['email']))){
   header('location: index.php');
 }
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
-  $email;
   if((isset($_POST['email'])) || (!empty($_POST['email']))){
     $email = $_POST['email'];
     $s_email = filter_var($email, FILTER_SANITIZE_EMAIL);
     if($s_email==$email){
-      if(filter_var($s_email, FILTER_VALIDATE_EMAIL) === TRUE){
+      if(filter_var($email, FILTER_VALIDATE_EMAIL)){
         $q = "SELECT id FROM users WHERE email = '$email'";
         $r = $c->query($q);
-        if($r->num_rows>0){
+        if($r->num_rows == 0){
+          $_SESSION['email'] = $email;
+        }else{
           $error_flag = false;
           $_SESSION['err_email'] = "Email already used";
-        }else{
-          $_SESSION['email'] = $email;
-          $_SESSION['key'];
         }
       }else{
         $error_flag = false;
@@ -39,15 +37,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $error_flag = false;
     $_SESSION['err_email'] = "Enter valid email";
   }
-  if($error_flag == true){
-    $q = "INSERT INTO users (email) VALUES ('$email')";
-    if($c->query($q) === TRUE){
-      header('location: key.php');
-    }else{
-      echo $_SESSION['err_email'] = "Something went wrong, try again later";
-    }
+  if($error_flag == TRUE){
+    $_SESSION['key'] = '';
+    header('location: key.php');
+  }else{
+    unset($_SESSION['key']);
+    unset($_SESSION['email']);
   }
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -64,7 +62,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         <form method='POST' action=''>
           <input type='text' name='email' placeholder="Email">
           <?php
-            if(isset($_SESSION['err_email']{
+            if(isset($_SESSION['err_email'])){
               echo "<span class='email-error'>".$_SESSION['err_email']."</span>";
               unset($_SESSION['err_email']);
             }
